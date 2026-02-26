@@ -1,0 +1,21 @@
+<div class="container">
+
+  <h2 class="title">Personas Registradas</h2>
+
+  <div class="grid">
+
+    <div class="card" *ngFor="let p of personas">
+
+      <div class="avatar">
+        {{ p.first_name[0] }}{{ p.last_name[0] }}
+      </div>
+
+      <h3>{{ p.first_name }} {{ p.last_name }}</h3>
+
+      <p class="age">Edad: {{ p.age }} años</p>
+
+    </div>
+
+  </div>
+
+</div>
