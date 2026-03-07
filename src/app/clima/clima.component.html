@@ -1,21 +1,29 @@
-<h2>Pronóstico por Hora</h2>
+<h2 class="titulo">
+  Pronóstico por Hora
+  <span class="ubicacion">{{ ubicacion }}</span>
+</h2>
 
-<div *ngIf="!datosClima">
+<div *ngIf="datosClima.length === 0">
   Cargando clima...
 </div>
 
-<div class="contenedor" *ngIf="datosClima">
+<div class="contenedor" *ngIf="datosClima.length > 0">
 
-  <div 
-    class="tarjeta"
-    *ngFor="let temp of datosClima.hourly.temperature_2m; let i = index">
+<div
+  class="tarjeta"
+  *ngFor="let clima of datosClima"
+  [ngClass]="getColor(clima.temperatura)"
+>
 
-    <p><strong>Fecha y Hora:</strong></p>
-    <p>{{ datosClima.hourly.time[i] }}</p>
+  <strong>Fecha</strong>
+  <p>{{ clima.hora | date:'shortDate' }}</p>
 
-    <p><strong>Temperatura:</strong></p>
-    <p>{{ temp }} °C</p>
+  <strong>Hora</strong>
+  <p>{{ clima.hora | date:'shortTime' }}</p>
 
-  </div>
+  <strong>Temperatura</strong>
+  <p>{{ clima.temperatura }} °C</p>
+
+</div>
 
 </div>

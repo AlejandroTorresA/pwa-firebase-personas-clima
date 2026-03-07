@@ -1,21 +1,54 @@
-<div class="container">
+<h2>Agregar Persona</h2>
 
-  <h2 class="title">Personas Registradas</h2>
+<form (ngSubmit)="addPersona()">
+  <input 
+    type="text" 
+    placeholder="Nombre"
+    [(ngModel)]="first_name"
+    name="first_name"
+    required>
 
-  <div class="grid">
+  <input 
+    type="text" 
+    placeholder="Apellido"
+    [(ngModel)]="last_name"
+    name="last_name"
+    required>
 
-    <div class="card" *ngFor="let p of personas">
+  <input 
+    type="number" 
+    placeholder="Edad"
+    [(ngModel)]="age"
+    name="age"
+    required>
 
-      <div class="avatar">
-        {{ p.first_name[0] }}{{ p.last_name[0] }}
-      </div>
+  <button type="submit">Agregar</button>
+</form>
 
-      <h3>{{ p.first_name }} {{ p.last_name }}</h3>
+<hr>
 
-      <p class="age">Edad: {{ p.age }} años</p>
+<h2>Lista de Personas</h2>
 
-    </div>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Edad</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
 
-  </div>
-
-</div>
+  <tbody>
+    <tr *ngFor="let persona of personas">
+      <td>{{persona.first_name}}</td>
+      <td>{{persona.last_name}}</td>
+      <td>{{persona.age}}</td>
+      <td>
+        <button (click)="deletePersona(persona.id)">
+          Eliminar
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

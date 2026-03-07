@@ -6,17 +6,48 @@ import { PersonasService } from '../../services/personas.service';
   templateUrl: './personas.component.html',
   styleUrls: ['./personas.component.css']
 })
+
 export class PersonasComponent implements OnInit {
 
-  personas: any[] = [];
+  personas:any[] = [];
 
-  constructor(private personasService: PersonasService) {}
+  first_name = '';
+  last_name = '';
+  age:number | null = null;
 
-  ngOnInit(): void {
-    this.personasService.getPersonas().subscribe(data => {
+  constructor(private personasService:PersonasService){}
+
+  ngOnInit(){
+    this.getPersonas();
+  }
+
+  getPersonas(){
+    this.personasService.getPersonas().subscribe(data=>{
       this.personas = data;
-      console.log(this.personas);
     });
+  }
+
+  addPersona(){
+
+    if(!this.first_name || !this.last_name || this.age === null){
+      return;
+    }
+
+    const persona = {
+      first_name: this.first_name,
+      last_name: this.last_name,
+      age: this.age
+    };
+
+    this.personasService.addPersona(persona).then(()=>{
+      this.first_name = '';
+      this.last_name = '';
+      this.age = null;
+    });
+  }
+
+  deletePersona(id:string){
+    this.personasService.deletePersona(id);
   }
 
 }
