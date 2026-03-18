@@ -27,22 +27,7 @@ export class ClimaComponent implements OnInit {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
 
-        // Obtener nombre de ciudad usando Open-Meteo Geocoding
-        const geoUrl =
-        `https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&language=es`;
-
-        this.http.get<any>(geoUrl).subscribe(res => {
-
-          if(res.results && res.results.length > 0){
-
-            const ciudad = res.results[0].name;
-            const estado = res.results[0].admin1;
-
-            this.ubicacion = `${ciudad}, ${estado}`;
-
-          }
-
-        });
+        this.ubicacion = `Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`;
 
         this.obtenerClima(lat, lon);
 
@@ -57,7 +42,7 @@ export class ClimaComponent implements OnInit {
   obtenerClima(lat: number, lon: number) {
 
     const url =
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m`;
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weathercode`;
 
     this.http.get(url).subscribe({
       next: (respuesta: any) => {
@@ -66,10 +51,12 @@ export class ClimaComponent implements OnInit {
 
         const horas = respuesta.hourly.time;
         const temperaturas = respuesta.hourly.temperature_2m;
+        const weathercodes = respuesta.hourly.weathercode; //codigos de clima para añadir iconos
 
         const datos = horas.map((hora: string, index: number) => ({
-          hora: hora,
-          temperatura: temperaturas[index]
+        hora: hora,
+        temperatura: temperaturas[index],
+        codigo: weathercodes[index] // se indexan los codigos de clima
         }));
 
         // SOLO 12 TARJETAS
@@ -98,6 +85,32 @@ export class ClimaComponent implements OnInit {
     }
 
     return 'cold';
+  }
+
+    getIcono(codigo: number): string { //obtencion de iconos para las tarjetas de clima
+
+    // ☀️ Despejado
+    if (codigo === 0) return '☀️';
+
+    // 🌤️ Parcialmente nublado
+    if (codigo === 1 || codigo === 2) return '🌤️';
+
+    // ☁️ Nublado
+    if (codigo === 3) return '☁️';
+
+    // 🌫️ Niebla
+    if (codigo >= 45 && codigo <= 48) return '🌫️';
+
+    // 🌧️ Lluvia
+    if (codigo >= 51 && codigo <= 67) return '🌧️';
+
+    // ❄️ Nieve
+    if (codigo >= 71 && codigo <= 77) return '❄️';
+
+    // ⛈️ Tormenta
+    if (codigo >= 80 && codigo <= 99) return '⛈️';
+
+    return '❓';
   }
 
 }

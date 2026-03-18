@@ -22,10 +22,16 @@ export class PersonasComponent implements OnInit {
   }
 
   getPersonas(){
-    this.personasService.getPersonas().subscribe(data=>{
+  this.personasService.getPersonas().subscribe({
+    next: (data) => {
+      console.log('DATOS:', data);
       this.personas = data;
-    });
-  }
+    },
+    error: (err) => {
+      console.error('ERROR FIREBASE:', err);
+    }
+  });
+}
 
   addPersona(){
 

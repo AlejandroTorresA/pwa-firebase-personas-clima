@@ -8,20 +8,21 @@
 </div>
 
 <div class="contenedor" *ngIf="datosClima.length > 0">
-
+<!--TARJETAS DE CLIMA -->
 <div
   class="tarjeta"
   *ngFor="let clima of datosClima"
   [ngClass]="getColor(clima.temperatura)"
 >
 
-  <strong>Fecha</strong>
-  <p>{{ clima.hora | date:'shortDate' }}</p>
+  <p class="icono">
+    {{ getIcono(clima.codigo) }}
+  </p>
 
-  <strong>Hora</strong>
-  <p>{{ clima.hora | date:'shortTime' }}</p>
+  <p><strong>Fecha y Hora</strong></p>
+  <p>{{ clima.hora | date:'short' }}</p>
 
-  <strong>Temperatura</strong>
+  <p><strong>Temperatura</strong></p>
   <p>{{ clima.temperatura }} °C</p>
 
 </div>
